@@ -4,6 +4,7 @@ import logging
 import time
 
 from fastapi import Depends, FastAPI, Request, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sentence_transformers import SentenceTransformer
 
@@ -87,3 +88,11 @@ def value_error_handler(request: Request, exc: ValueError) -> JSONResponse:  # n
         status_code=status.HTTP_400_BAD_REQUEST,
         content={"detail": str(exc)},
     )
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"]
+)

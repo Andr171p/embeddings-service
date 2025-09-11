@@ -10,6 +10,7 @@ dependencies = [
     "mypy>=1.17.1",
     "ruff>=0.13.0",
     "sentence-transformers>=5.1.0",
+    "transformers>=4.56.1",
 ]
 
 [tool.ruff]

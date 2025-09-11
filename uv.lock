@@ -244,6 +244,7 @@ dependencies = [
     { name = "mypy" },
     { name = "ruff" },
     { name = "sentence-transformers" },
+    { name = "transformers" },
 ]
 
 [package.metadata]
@@ -254,6 +255,7 @@ requires-dist = [
     { name = "mypy", specifier = ">=1.17.1" },
     { name = "ruff", specifier = ">=0.13.0" },
     { name = "sentence-transformers", specifier = ">=5.1.0" },
+    { name = "transformers", specifier = ">=4.56.1" },
 ]
 
 [[package]]
