@@ -25,7 +25,7 @@ class HealthCheck(BaseModel):
     status: Literal["healthy", "failed"] = "healthy"
     model: str
     device: str = "cpu"
-    uptime: float | None = None
+    uptime: int | None = None
 
 
 class EmbeddingRequest(BaseModel):

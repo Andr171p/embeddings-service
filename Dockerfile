@@ -15,12 +15,11 @@ RUN pip install --upgrade pip && \
 # Копируем остальные файлы проекта
 COPY . .
 
-ENV MODEL_NAME=sentence-transformers/all-MiniLM-L6-v2
-ENV PORT=8000
+ENV MODEL_NAME=$MODEL_NAME
 
 # Предзагрузка модели
 RUN python -c "from transformers import AutoModel; AutoModel.from_pretrained('${MODEL_NAME}')"
 
-EXPOSE ${PORT}
+EXPOSE 8000
 
 CMD ["python", "main.py"]

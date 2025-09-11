@@ -60,7 +60,7 @@ def healthcheck(
         payload.update({
             "status": "healthy",
             "model_status": "WORKING_AND_LOADING",
-            "uptime": time.time() - START_TIME,
+            "uptime": int(time.time() - START_TIME),
         })
     return HealthCheck.model_validate(payload)
 
