@@ -3,8 +3,4 @@ services:
     build: .
     ports:
       - "8005:8000"
-    env_file: .env
-    environment:
-      - MODEL_NAME="deepvk/USER-bge-m3"
-      - INSTANCE_NUMBER=1
     restart: unless-stopped

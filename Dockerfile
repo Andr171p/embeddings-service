@@ -15,10 +15,8 @@ RUN pip install --upgrade pip && \
 # Копируем остальные файлы проекта
 COPY . .
 
-ENV MODEL_NAME=$MODEL_NAME
-
 # Предзагрузка модели
-RUN python -c "from transformers import AutoModel; AutoModel.from_pretrained('${MODEL_NAME}')"
+RUN python -c "from transformers import AutoModel; AutoModel.from_pretrained('deepvk/USER-bge-m3')"
 
 EXPOSE 8000
 
