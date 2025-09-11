@@ -6,6 +6,7 @@ import time
 from fastapi import Depends, FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from prometheus_fastapi_instrumentator import Instrumentator
 from sentence_transformers import SentenceTransformer
 
 from .depends import get_device, get_hostname, get_model, settings
@@ -20,6 +21,8 @@ app = FastAPI(
     description="Предоставляет HTTP методы для векторизации текста",
     version="1.0.0",
 )
+
+Instrumentator().instrument(app).expose(app)
 
 
 def is_model_ready(model: SentenceTransformer) -> bool:
