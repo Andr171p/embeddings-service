@@ -20,8 +20,6 @@ RUN uv sync --frozen --no-dev --no-cache
 # Копируем остальные файлы проекта
 COPY . .
 
-USER appuser
-
 # Создание директории для кеша модели
 RUN mkdir -p /home/appuser/.cache/huggingface/hub
 
