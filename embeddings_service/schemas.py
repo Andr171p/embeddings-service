@@ -11,9 +11,16 @@ load_dotenv(ENV_FILE)
 
 class Settings(BaseSettings):
     model_name: str = MODEL_NAME
+    instance_number: int = 1
+
+    @property
+    def instance_id(self) -> str:
+        return f"embeddings-service-{self.instance_number}"
 
 
 class HealthCheck(BaseModel):
+    instance_id: str
+    hostname: str
     status: Literal["healthy", "failed"] = "healthy"
     model: str
     device: str = "cpu"

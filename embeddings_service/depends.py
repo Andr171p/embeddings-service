@@ -1,17 +1,22 @@
 from typing import Final
 
 import logging
+import socket
 from functools import cache
 
 import torch
 from sentence_transformers import SentenceTransformer
 
-from .constants import MODEL_NAME
 from .schemas import Settings
 
 logger = logging.getLogger(__name__)
 
 settings: Final[Settings] = Settings()
+
+
+@cache
+def get_hostname() -> str:
+    return socket.gethostname()
 
 
 @cache

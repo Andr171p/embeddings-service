@@ -7,7 +7,7 @@ from fastapi import Depends, FastAPI, Request, status
 from fastapi.responses import JSONResponse
 from sentence_transformers import SentenceTransformer
 
-from .depends import get_device, get_model, settings
+from .depends import get_device, get_hostname, get_model, settings
 from .schemas import EmbeddingRequest, EmbeddingResponse, HealthCheck
 
 START_TIME = time.time()
@@ -42,21 +42,23 @@ def is_model_ready(model: SentenceTransformer) -> bool:
 def healthcheck(
         model: Annotated[SentenceTransformer, Depends(get_model)],
         device: Annotated[str, Depends(get_device)],
+        hostname: Annotated[str, Depends(get_hostname)],
 ) -> HealthCheck:
+    payload: dict[str, str | int] = {
+        "instance_id": settings.instance_id,
+        "hostname": hostname,
+        "model": model,
+        "device": device,
+    }
     if not is_model_ready(model):
-        return HealthCheck(
-            status="failed",
-            model=settings.model_name,
-            device=device,
-            model_status="MODEL_TEST_FAILED"
-        )
-    return HealthCheck(
-        status="healthy",
-        model=settings.model_name,
-        device=device,
-        model_status="WORKING_AND_LOADING",
-        uptime=time.time() - START_TIME,
-    )
+        payload.update({"status": "failed", "model_status": "MODEL_TEST_FAILED"})
+    else:
+        payload.update({
+            "status": "healthy",
+            "model_status": "WORKING_AND_LOADING",
+            "uptime": time.time() - START_TIME,
+        })
+    return HealthCheck.model_validate(payload)
 
 
 @app.post(
