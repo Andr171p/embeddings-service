@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "embeddings-service"
 version = "0.1.0"
@@ -11,8 +15,20 @@ dependencies = [
     "prometheus-fastapi-instrumentator>=7.1.0",
     "ruff>=0.13.0",
     "sentence-transformers>=5.1.0",
+    "setuptools>=80.9.0",
     "transformers>=4.56.1",
 ]
+
+[project.urls]
+Homepage = "https://github.com/Andr171p/embeddings-service.git"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+packages = ["embeddings_service"]
+
+[tool.setuptools.package-data]
+fastguard = ["*.py", "*.pyi", "*.txt", "*.json", "*.yaml"]
+
 
 [tool.ruff]
 line-length = 99
