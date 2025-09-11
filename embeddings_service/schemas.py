@@ -23,7 +23,7 @@ class EmbeddingRequest(BaseModel):
 
 
 class EmbeddingResponse(BaseModel):
-    embeddings: list[float]
+    embeddings: list[list[float]]
 
     @computed_field
     def dimensions(self) -> int:

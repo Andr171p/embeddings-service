@@ -1,11 +1,11 @@
 from typing import Annotated
 
-from fastapi import FastAPI, Depends, Request, status
+from fastapi import Depends, FastAPI, Request, status
 from fastapi.responses import JSONResponse
 from sentence_transformers import SentenceTransformer
 
-from .depends import get_embeddings
-from .schemas import HealthCheck, EmbeddingRequest, EmbeddingResponse
+from .depends import get_model
+from .schemas import EmbeddingRequest, EmbeddingResponse, HealthCheck
 
 app = FastAPI(
     title="API Сервис ембеддингов",
@@ -32,20 +32,20 @@ def health_check() -> HealthCheck:
 )
 def vectorize(
         request: EmbeddingRequest,
-        embeddings: Annotated[SentenceTransformer, Depends(get_embeddings)]
+        model: Annotated[SentenceTransformer, Depends(get_model)]
 ) -> EmbeddingResponse:
-    vectors = embeddings.encode(
+    embeddings = model.encode(
         request.texts,
         batch_size=request.batch_size,
         normalize_embeddings=request.normalize,
         convert_to_tensor=False,
         convert_to_numpy=True
     ).tolist()
-    return EmbeddingResponse(embeddings=vectors)
+    return EmbeddingResponse(embeddings=embeddings)
 
 
 @app.exception_handler(ValueError)
-def value_error_handler(request: Request, exc: ValueError) -> JSONResponse:
+def value_error_handler(request: Request, exc: ValueError) -> JSONResponse:  # noqa: ARG001
     return JSONResponse(
         status_code=status.HTTP_400_BAD_REQUEST,
         content={"detail": str(exc)},

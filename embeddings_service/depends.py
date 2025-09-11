@@ -17,5 +17,5 @@ def get_device() -> str:
 
 
 @cache
-def get_embeddings() -> SentenceTransformer:
+def get_model() -> SentenceTransformer:
     return SentenceTransformer(MODEL_NAME, device=get_device())
