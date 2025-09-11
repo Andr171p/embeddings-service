@@ -20,10 +20,6 @@ RUN uv sync --frozen --no-dev --no-cache
 # Копируем остальные файлы проекта
 COPY . .
 
-# Создаем пользователя приложения и меняем владельца рабочей директории
-RUN useradd -m -u 1000 appuser && \
-    chown -R appuser:appuser /embeddings-service
-
 USER appuser
 
 # Создание директории для кеша модели
