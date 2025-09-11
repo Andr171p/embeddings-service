@@ -6,9 +6,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Установка uv
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.cargo/bin:${PATH}"
+# Установка uv через pip
+RUN pip install --no-cache-dir uv
 
 WORKDIR /embeddings-service
 
@@ -18,10 +17,10 @@ COPY pyproject.toml uv.lock ./
 # Устанавливаем зависимости с помощью uv
 RUN uv sync --frozen --no-dev --no-cache
 
-# Копирование остальных файлов проекта
+# Копируем остальные файлы проекта
 COPY . .
 
-# Создание пользователя приложения и смена владельца рабочей директории
+# Создаем пользователя приложения и меняем владельца рабочей директории
 RUN useradd -m -u 1000 appuser && \
     chown -R appuser:appuser /embeddings-service
 
