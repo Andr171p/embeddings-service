@@ -51,7 +51,7 @@ def healthcheck(
     payload: dict[str, str | int] = {
         "instance_id": settings.instance_id,
         "hostname": hostname,
-        "model": model,
+        "model": settings.model_name,
         "device": device,
     }
     if not is_model_ready(model):
