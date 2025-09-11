@@ -1,3 +1,5 @@
+from typing import Final
+
 import logging
 from functools import cache
 
@@ -5,8 +7,11 @@ import torch
 from sentence_transformers import SentenceTransformer
 
 from .constants import MODEL_NAME
+from .schemas import Settings
 
 logger = logging.getLogger(__name__)
+
+settings: Final[Settings] = Settings()
 
 
 @cache
@@ -18,4 +23,4 @@ def get_device() -> str:
 
 @cache
 def get_model() -> SentenceTransformer:
-    return SentenceTransformer(MODEL_NAME, device=get_device())
+    return SentenceTransformer(settings.model_name, device=get_device())

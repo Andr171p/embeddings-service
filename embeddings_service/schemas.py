@@ -1,12 +1,23 @@
-from pydantic import BaseModel, Field, computed_field, field_validator
+from typing import Literal
 
-from .constants import DEFAULT_BATCH_SIZE, MIN_BATCH_SIZE, MODEL_NAME
+from dotenv import load_dotenv
+from pydantic import BaseModel, Field, computed_field, field_validator
+from pydantic_settings import BaseSettings
+
+from .constants import DEFAULT_BATCH_SIZE, ENV_FILE, MIN_BATCH_SIZE, MODEL_NAME
+
+load_dotenv(ENV_FILE)
+
+
+class Settings(BaseSettings):
+    model_name: str = MODEL_NAME
 
 
 class HealthCheck(BaseModel):
-    status: str = "healthy"
-    model: str = MODEL_NAME
+    status: Literal["healthy", "failed"] = "healthy"
+    model: str
     device: str = "cpu"
+    uptime: int | None = None
 
 
 class EmbeddingRequest(BaseModel):

@@ -76,13 +76,16 @@ class RemoteHTTPEmbeddings(Embeddings):
                 data = response.json()
             healthcheck = HealthCheck.model_validate(data)
             if healthcheck.status != "healthy":
-                logger.info("Server not healthy! Status: %s", healthcheck.status)
+                logger.info(
+                    "Server not healthy! Status: %s, model_status: %s",
+                    healthcheck.status, healthcheck.model_status
+                )
                 return False
         except TimeoutError:
             logger.exception("Service still not healthy! Error: {e}")
             return False
         else:
-            logger.info("Server healthy!")
+            logger.info("Server healthy!", extra=healthcheck.model_dump())
             return True
 
     def _vectorize(self, texts: list[str]) -> list[list[float]]:
