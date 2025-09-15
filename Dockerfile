@@ -1,4 +1,4 @@
-FROM python:3.13-slim
+FROM python:3.11-slim
 
 WORKDIR /embeddings-service
 
@@ -14,9 +14,6 @@ RUN pip install --upgrade pip && \
 
 # Копируем остальные файлы проекта
 COPY . .
-
-# Предзагрузка модели
-RUN python -c "from transformers import AutoModel; AutoModel.from_pretrained('deepvk/USER-bge-m3')"
 
 EXPOSE 8000
 

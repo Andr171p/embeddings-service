@@ -12,7 +12,6 @@ load_dotenv(ENV_FILE)
 class Settings(BaseSettings):
     model_name: str = MODEL_NAME
     instance_number: int = 1
-    port: int = 8000
 
     @property
     def instance_id(self) -> str:
