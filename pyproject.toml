@@ -19,6 +19,16 @@ dependencies = [
     "transformers>=4.56.1",
 ]
 
+[project.optional-dependencies]
+server = [
+    "sentence-transformers>=5.1.0",
+    "transformers>=4.56.1",
+]
+langchain = [
+    "aiohttp>=3.12.15",
+    "langchain-core>=0.3.76",
+]
+
 [project.urls]
 Homepage = "https://github.com/Andr171p/embeddings-service.git"
 
