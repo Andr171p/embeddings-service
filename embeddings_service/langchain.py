@@ -106,7 +106,9 @@ class RemoteHTTPEmbeddings(Embeddings):
         return embeddings_response.embeddings
 
     async def _avectorize(self, texts: list[str]) -> list[list[float]]:
-        async with aiohttp.ClientSession(timeout=self.timeout) as session, session.post(
+        async with aiohttp.ClientSession(
+                timeout=aiohttp.ClientTimeout(self.timeout)
+        ) as session, session.post(
             url=f"{self.base_url}/api/v1/embeddings/vectorize",
             headers={"Content-Type": "application/json"},
                 json=EmbeddingRequest(
