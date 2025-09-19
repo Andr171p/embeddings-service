@@ -95,7 +95,7 @@ class RemoteHTTPEmbeddings(Embeddings):
                 headers={"Content-Type": "application/json"},
                 json=EmbeddingRequest(
                     texts=texts,
-                    normalize_embeddings=self.normalize_embeddings,
+                    normalize=self.normalize_embeddings,
                     batch_size=self.batch_size
                 ).model_dump(),
                 timeout=self.timeout
@@ -113,7 +113,7 @@ class RemoteHTTPEmbeddings(Embeddings):
             headers={"Content-Type": "application/json"},
                 json=EmbeddingRequest(
                     texts=texts,
-                    normalize_embeddings=self.normalize_embeddings,
+                    normalize=self.normalize_embeddings,
                     batch_size=self.batch_size
                 ).model_dump(),
         ) as response:
