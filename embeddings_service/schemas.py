@@ -45,4 +45,4 @@ class EmbeddingResponse(BaseModel):
 
     @computed_field
     def dimensions(self) -> int:
-        return len(self.embeddings)
+        return len(self.embeddings[0])
