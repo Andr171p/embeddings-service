@@ -1,5 +1,3 @@
-from typing import Final
-
 import logging
 import socket
 from functools import cache
@@ -7,11 +5,9 @@ from functools import cache
 import torch
 from sentence_transformers import SentenceTransformer
 
-from .schemas import Settings
+from .settings import settings
 
 logger = logging.getLogger(__name__)
-
-settings: Final[Settings] = Settings()
 
 
 @cache

@@ -1,7 +1,9 @@
-from typing import Annotated
+from typing import Annotated, ParamSpec, TypeVar
 
 import logging
 import time
+from collections.abc import Callable
+from functools import wraps
 
 from fastapi import Depends, FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,17 +11,39 @@ from fastapi.responses import JSONResponse
 from prometheus_fastapi_instrumentator import Instrumentator
 from sentence_transformers import SentenceTransformer
 
-from .depends import get_device, get_hostname, get_model, settings
+from .depends import get_device, get_hostname, get_model
 from .schemas import EmbeddingRequest, EmbeddingResponse, HealthCheck
+from .settings import settings
+
+T = TypeVar("T")  # Тип возвращаемого значения
+P = ParamSpec("P")  # Параметры функции
+
 
 START_TIME = time.time()
 
 logger = logging.getLogger(__name__)
 
+
+def timer(func: Callable[P, T]) -> Callable[P, T]:
+    """Замер времени выполнения функции"""
+    @wraps(func)
+    def wrapper(*args, **kwargs) -> T:
+        start_time = time.time()
+        try:
+            return func(*args, **kwargs)
+        finally:
+            execution_time = time.time() - start_time
+            logger.info(
+                "%s execution time: %s seconds",
+                func.__name__, round(execution_time, 2)
+            )
+    return wrapper
+
+
 app = FastAPI(
     title="API Сервис ембеддингов",
     description="Предоставляет HTTP методы для векторизации текста",
-    version="1.0.0",
+    version="0.1.0",
 )
 
 Instrumentator().instrument(app).expose(app)
@@ -71,6 +95,7 @@ def healthcheck(
     response_model=EmbeddingResponse,
     summary="Векторизует текст"
 )
+@timer
 def vectorize(
         request: EmbeddingRequest,
         model: Annotated[SentenceTransformer, Depends(get_model)]
@@ -80,7 +105,8 @@ def vectorize(
         batch_size=request.batch_size,
         normalize_embeddings=request.normalize,
         convert_to_tensor=False,
-        convert_to_numpy=True
+        convert_to_numpy=True,
+        show_progress_bar=False,
     ).tolist()
     return EmbeddingResponse(embeddings=embeddings)
 

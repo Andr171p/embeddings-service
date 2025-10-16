@@ -6,8 +6,8 @@ from langchain_core.embeddings import Embeddings
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from .constants import BACKOFF_FACTOR, DEFAULT_BATCH_SIZE, MAX_RETRIES, STATUS_FORCELIST, TIMEOUT
 from .schemas import EmbeddingRequest, EmbeddingResponse, HealthCheck
+from .settings import BACKOFF_FACTOR, DEFAULT_BATCH_SIZE, MAX_RETRIES, STATUS_FORCELIST, TIMEOUT
 
 logger = logging.getLogger("RemoteHTTPEmbeddings")
 
